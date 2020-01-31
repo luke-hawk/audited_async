@@ -13,7 +13,7 @@ class AuditedAsync::AuditAsyncJob < ActiveJob::Base
     record.send(:write_audit, changes)
   end
 
-  private
+  protected
 
   def extract_auditing_elements(args)
     return [args[:class_name].safe_constantize, args[:record_id], extract_audit_changes(args)]
