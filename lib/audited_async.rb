@@ -85,8 +85,7 @@ module Audited::Auditor::AuditedInstanceMethods
                                action: method,
                                audited_changes: (changes || audited_attributes).to_json,
                                comment: audit_comment,
-                               user_id: audit_user&.send(audit_user&.class&.primary_key&.to_sym),
-                               user_type: audit_user&.class&.name,
+                               user: audit_user,
                                request_uuid: audit_request_uuid,
                                remote_address: audit_remote_address
   end
