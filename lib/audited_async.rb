@@ -85,7 +85,7 @@ module Audited::Auditor::AuditedInstanceMethods
                                action: method,
                                audited_changes: (changes || audited_attributes).to_json,
                                comment: audit_comment,
-                               user_id: audit_user&.send(audit_user&.class&.primary_key&.to_sym),
+                               user_id: audit_user.is_a?(String) ? audit_user : audit_user&.try(audit_user&.class&.primary_key&.to_sym),
                                user_type: audit_user&.class&.name,
                                request_uuid: audit_request_uuid,
                                remote_address: audit_remote_address
@@ -95,7 +95,7 @@ module Audited::Auditor::AuditedInstanceMethods
   protected
 
   def audit_user
-    ::Audited.store[:audited_user] || ::Audited.store[:current_user].try!(:call)
+    @audit_user ||= ::Audited.store[:audited_user] || ::Audited.store[:current_user].try!(:call)
   end
 
   def audit_request_uuid
