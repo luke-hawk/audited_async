@@ -71,7 +71,7 @@ module Audited::Auditor::AuditedInstanceMethods
   end
 
   define_method :audit_destroy do
-    return _audit_destroy.bind(self).call unless audited_async_enabled?
+    return _audit_destroy.bind(self).call unless audited_async_enabled? && AuditedAsync.config.destroy_enabled?
 
     perform_async_audit 'destroy' unless new_record?
   end
